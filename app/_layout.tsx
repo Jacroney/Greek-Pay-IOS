@@ -10,7 +10,7 @@ export default function RootLayout() {
   return (
     <AuthProvider>
       <StripeProvider publishableKey={STRIPE_PUBLISHABLE_KEY}>
-        <StatusBar style="auto" />
+        <StatusBar style="dark" />
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="index" />
           <Stack.Screen name="(auth)" />

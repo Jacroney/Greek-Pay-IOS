@@ -2,17 +2,24 @@ import { useState } from 'react';
 import {
   View,
   Text,
-  TextInput,
   TouchableOpacity,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
-  ActivityIndicator,
   Alert,
+  Image,
+  Linking,
 } from 'react-native';
 import { useRouter, Link } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { Mail, Lock } from 'lucide-react-native';
 import { useAuth } from '../../hooks/useAuth';
+import { MercuryCard } from '../../components/ui/MercuryCard';
+import { GradientButton } from '../../components/ui/GradientButton';
+import { IconInput } from '../../components/ui/IconInput';
+
+const PRIVACY_POLICY_URL = 'https://greekpay.org/privacy';
+const TERMS_OF_SERVICE_URL = 'https://greekpay.org/terms';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
@@ -44,7 +51,7 @@ export default function LoginScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <SafeAreaView className="flex-1 bg-surface-bg">
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         className="flex-1"
@@ -56,71 +63,85 @@ export default function LoginScreen() {
           <View className="flex-1 px-6 pt-12 pb-8">
             {/* Logo / Header */}
             <View className="items-center mb-12">
-              <View className="w-20 h-20 bg-blue-600 rounded-2xl items-center justify-center mb-4">
-                <Text className="text-white text-3xl font-bold">GP</Text>
+              <View className="w-24 h-24 bg-primary rounded-2xl items-center justify-center mb-4 p-3">
+                <Image
+                  source={require('../../assets/logo.png')}
+                  className="w-full h-full"
+                  resizeMode="contain"
+                />
               </View>
               <Text className="text-3xl font-bold text-gray-900">GreekPay</Text>
               <Text className="text-gray-500 mt-2">Member Portal</Text>
             </View>
 
             {/* Login Form */}
-            <View className="space-y-4">
-              <View>
-                <Text className="text-sm font-medium text-gray-700 mb-2">Email</Text>
-                <TextInput
-                  className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-gray-900"
-                  placeholder="Enter your email"
-                  placeholderTextColor="#9CA3AF"
-                  value={email}
-                  onChangeText={setEmail}
-                  keyboardType="email-address"
-                  autoCapitalize="none"
-                  autoComplete="email"
-                  autoCorrect={false}
-                  editable={!isSubmitting}
-                />
+            <MercuryCard elevated>
+              <View className="space-y-4">
+                <View>
+                  <Text className="text-sm font-medium text-gray-700 mb-2">Email</Text>
+                  <IconInput
+                    icon={<Mail size={18} color="#535461" />}
+                    placeholder="Enter your email"
+                    value={email}
+                    onChangeText={setEmail}
+                    keyboardType="email-address"
+                    autoCapitalize="none"
+                    autoComplete="email"
+                    autoCorrect={false}
+                    editable={!isSubmitting}
+                  />
+                </View>
+
+                <View className="mt-4">
+                  <Text className="text-sm font-medium text-gray-700 mb-2">Password</Text>
+                  <IconInput
+                    icon={<Lock size={18} color="#535461" />}
+                    placeholder="Enter your password"
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry
+                    autoCapitalize="none"
+                    autoComplete="password"
+                    editable={!isSubmitting}
+                  />
+                </View>
+
+                <View className="mt-6">
+                  <GradientButton
+                    title="Sign In"
+                    onPress={handleLogin}
+                    isLoading={isSubmitting}
+                    disabled={isSubmitting}
+                  />
+                </View>
+
+                <Link href="/(auth)/forgot-password" asChild>
+                  <TouchableOpacity className="mt-4 items-center">
+                    <Text className="text-primary font-medium">Forgot password?</Text>
+                  </TouchableOpacity>
+                </Link>
               </View>
-
-              <View className="mt-4">
-                <Text className="text-sm font-medium text-gray-700 mb-2">Password</Text>
-                <TextInput
-                  className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-gray-900"
-                  placeholder="Enter your password"
-                  placeholderTextColor="#9CA3AF"
-                  value={password}
-                  onChangeText={setPassword}
-                  secureTextEntry
-                  autoCapitalize="none"
-                  autoComplete="password"
-                  editable={!isSubmitting}
-                />
-              </View>
-
-              <TouchableOpacity
-                className={`mt-6 py-4 rounded-xl items-center ${
-                  isSubmitting ? 'bg-blue-400' : 'bg-blue-600'
-                }`}
-                onPress={handleLogin}
-                disabled={isSubmitting}
-                activeOpacity={0.8}
-              >
-                {isSubmitting ? (
-                  <ActivityIndicator color="#FFFFFF" />
-                ) : (
-                  <Text className="text-white font-semibold text-base">Sign In</Text>
-                )}
-              </TouchableOpacity>
-
-              <Link href="/(auth)/forgot-password" asChild>
-                <TouchableOpacity className="mt-4 items-center">
-                  <Text className="text-blue-600 font-medium">Forgot password?</Text>
-                </TouchableOpacity>
-              </Link>
-            </View>
+            </MercuryCard>
 
             {/* Footer */}
             <View className="mt-auto pt-8">
               <Text className="text-center text-gray-400 text-sm">
+                By signing in, you agree to our{' '}
+                <Text
+                  className="text-primary"
+                  onPress={() => Linking.openURL(TERMS_OF_SERVICE_URL)}
+                >
+                  Terms of Service
+                </Text>{' '}
+                and{' '}
+                <Text
+                  className="text-primary"
+                  onPress={() => Linking.openURL(PRIVACY_POLICY_URL)}
+                >
+                  Privacy Policy
+                </Text>
+              </Text>
+              <Text className="text-center text-gray-400 text-xs mt-3">
                 Contact your chapter admin if you need help signing in
               </Text>
             </View>

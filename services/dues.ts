@@ -2,7 +2,7 @@ import { supabase } from './supabase';
 import { MemberDuesSummary, DuesPayment, InstallmentPlan, InstallmentPlanWithPayments } from '../types';
 
 export const DuesService = {
-  async getMemberDuesSummaryByEmail(email: string): Promise<MemberDuesSummary[]> {
+  async getMemberDuesSummary(): Promise<MemberDuesSummary[]> {
     const { data, error } = await supabase.rpc('get_my_dues_summary');
 
     if (error) {

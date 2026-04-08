@@ -75,7 +75,7 @@ export default function ProfileScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50" edges={['top']}>
+    <SafeAreaView className="flex-1 bg-surface-bg" edges={['top']}>
       {/* Header */}
       <View className="bg-white border-b border-gray-200 px-4 py-3 flex-row items-center justify-between">
         <View className="flex-row items-center">
@@ -88,7 +88,7 @@ export default function ProfileScreen() {
           <TouchableOpacity
             onPress={handleSave}
             disabled={isSaving}
-            className="bg-blue-600 px-4 py-2 rounded-lg flex-row items-center"
+            className="bg-primary px-4 py-2 rounded-lg flex-row items-center"
           >
             {isSaving ? (
               <ActivityIndicator size="small" color="#FFFFFF" />
@@ -109,7 +109,7 @@ export default function ProfileScreen() {
         <ScrollView className="flex-1" contentContainerStyle={{ paddingBottom: 32 }}>
           {/* Avatar */}
           <View className="items-center py-8">
-            <View className="w-24 h-24 bg-blue-600 rounded-3xl items-center justify-center">
+            <View className="w-24 h-24 bg-primary rounded-3xl items-center justify-center">
               <Text className="text-white text-3xl font-bold">
                 {getInitials(fullName || profile?.full_name)}
               </Text>
@@ -131,7 +131,7 @@ export default function ProfileScreen() {
             <View className="mt-4">
               <Text className="text-sm font-medium text-gray-700 mb-2">Full Name</Text>
               <TextInput
-                className="bg-white border border-gray-200 rounded-xl px-4 py-3.5 text-gray-900"
+                className="bg-surface-bg border border-gray-200/50 rounded-xl px-4 py-3.5 text-gray-900"
                 placeholder="Enter your full name"
                 placeholderTextColor="#9CA3AF"
                 value={fullName}
@@ -145,7 +145,7 @@ export default function ProfileScreen() {
             <View className="mt-4">
               <Text className="text-sm font-medium text-gray-700 mb-2">Phone Number</Text>
               <TextInput
-                className="bg-white border border-gray-200 rounded-xl px-4 py-3.5 text-gray-900"
+                className="bg-surface-bg border border-gray-200/50 rounded-xl px-4 py-3.5 text-gray-900"
                 placeholder="Enter your phone number"
                 placeholderTextColor="#9CA3AF"
                 value={phoneNumber}
@@ -159,7 +159,7 @@ export default function ProfileScreen() {
             <View className="mt-4">
               <Text className="text-sm font-medium text-gray-700 mb-2">Year</Text>
               <TouchableOpacity
-                className="bg-white border border-gray-200 rounded-xl px-4 py-3.5 flex-row items-center justify-between"
+                className="bg-surface-bg border border-gray-200/50 rounded-xl px-4 py-3.5 flex-row items-center justify-between"
                 onPress={() => setShowYearPicker(!showYearPicker)}
               >
                 <Text className={year ? 'text-gray-900' : 'text-gray-400'}>
@@ -169,12 +169,12 @@ export default function ProfileScreen() {
               </TouchableOpacity>
 
               {showYearPicker && (
-                <View className="bg-white border border-gray-200 rounded-xl mt-2 overflow-hidden">
+                <View className="bg-white border border-gray-200/50 rounded-xl mt-2 overflow-hidden">
                   {YEAR_OPTIONS.map((option) => (
                     <TouchableOpacity
                       key={option.value}
                       className={`px-4 py-3 border-b border-gray-100 flex-row items-center justify-between ${
-                        year === option.value ? 'bg-blue-50' : ''
+                        year === option.value ? 'bg-primary-soft' : ''
                       }`}
                       onPress={() => {
                         setYear(option.value);
@@ -183,12 +183,12 @@ export default function ProfileScreen() {
                     >
                       <Text
                         className={`${
-                          year === option.value ? 'text-blue-600 font-medium' : 'text-gray-900'
+                          year === option.value ? 'text-primary font-medium' : 'text-gray-900'
                         }`}
                       >
                         {option.label}
                       </Text>
-                      {year === option.value && <Check size={18} color="#2563EB" />}
+                      {year === option.value && <Check size={18} color="#5266eb" />}
                     </TouchableOpacity>
                   ))}
                 </View>
@@ -199,7 +199,7 @@ export default function ProfileScreen() {
             <View className="mt-4">
               <Text className="text-sm font-medium text-gray-700 mb-2">Major</Text>
               <TextInput
-                className="bg-white border border-gray-200 rounded-xl px-4 py-3.5 text-gray-900"
+                className="bg-surface-bg border border-gray-200/50 rounded-xl px-4 py-3.5 text-gray-900"
                 placeholder="Enter your major"
                 placeholderTextColor="#9CA3AF"
                 value={major}

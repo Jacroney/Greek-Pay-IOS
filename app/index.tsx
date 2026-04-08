@@ -18,8 +18,8 @@ export default function Index() {
   }, [isAuthenticated, isLoading]);
 
   return (
-    <View className="flex-1 items-center justify-center bg-white">
-      <ActivityIndicator size="large" color="#2563eb" />
+    <View className="flex-1 items-center justify-center bg-surface-bg">
+      <ActivityIndicator size="large" color="#5266eb" />
     </View>
   );
 }

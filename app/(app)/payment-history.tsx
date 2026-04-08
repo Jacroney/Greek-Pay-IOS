@@ -68,9 +68,9 @@ export default function PaymentHistoryScreen() {
 
   if (isLoading) {
     return (
-      <SafeAreaView className="flex-1 bg-gray-50">
+      <SafeAreaView className="flex-1 bg-surface-bg">
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#2563eb" />
+          <ActivityIndicator size="large" color="#5266eb" />
         </View>
       </SafeAreaView>
     );
@@ -79,7 +79,7 @@ export default function PaymentHistoryScreen() {
   const totalPaid = payments.reduce((sum, p) => sum + p.amount, 0);
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50" edges={['top']}>
+    <SafeAreaView className="flex-1 bg-surface-bg" edges={['top']}>
       {/* Header */}
       <View className="bg-white border-b border-gray-200 px-4 py-3 flex-row items-center">
         <TouchableOpacity onPress={() => router.back()} className="mr-3 p-1">
@@ -92,7 +92,7 @@ export default function PaymentHistoryScreen() {
         className="flex-1"
         contentContainerStyle={{ paddingBottom: 32 }}
         refreshControl={
-          <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} tintColor="#2563eb" />
+          <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} tintColor="#5266eb" />
         }
       >
         {/* Summary Card */}

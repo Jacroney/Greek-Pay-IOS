@@ -15,6 +15,8 @@ import { PaymentService } from '../../../services/payments';
 import { DuesService } from '../../../services/dues';
 import { MemberDuesSummary } from '../../../types';
 import { formatCurrency } from '../../../utils/format';
+import { MercuryCard } from '../../../components/ui/MercuryCard';
+import { GradientButton } from '../../../components/ui/GradientButton';
 
 type PaymentStep = 'loading' | 'review' | 'processing' | 'success' | 'error';
 
@@ -41,7 +43,7 @@ export default function PaymentScreen() {
   const loadDuesAndCreatePaymentIntent = async () => {
     try {
       // Get dues info
-      const summary = await DuesService.getMemberDuesSummaryByEmail('');
+      const summary = await DuesService.getMemberDuesSummary();
       const duesItem = summary.find((d) => d.id === duesId);
 
       if (!duesItem) {
@@ -117,7 +119,7 @@ export default function PaymentScreen() {
       case 'loading':
         return (
           <View className="flex-1 items-center justify-center">
-            <ActivityIndicator size="large" color="#2563eb" />
+            <ActivityIndicator size="large" color="#5266eb" />
             <Text className="text-gray-500 mt-4">Preparing payment...</Text>
           </View>
         );
@@ -126,66 +128,82 @@ export default function PaymentScreen() {
         return (
           <ScrollView className="flex-1" contentContainerStyle={{ paddingBottom: 32 }}>
             {/* Payment Summary Card */}
-            <View className="bg-white mx-4 mt-4 rounded-2xl p-5 shadow-sm">
-              <Text className="text-lg font-semibold text-gray-900 mb-4">Payment Summary</Text>
+            <View className="mx-4 mt-4">
+              <MercuryCard elevated>
+                <Text className="text-lg font-semibold text-gray-900 mb-4">Payment Summary</Text>
 
-              <View className="space-y-3">
-                <View className="flex-row justify-between py-2">
-                  <Text className="text-gray-600">Dues Amount</Text>
-                  <Text className="font-medium text-gray-900">
-                    {formatCurrency(paymentDetails?.duesAmount || 0)}
-                  </Text>
-                </View>
-
-                {(paymentDetails?.stripeFee || 0) > 0 && (
+                <View className="space-y-3">
                   <View className="flex-row justify-between py-2">
-                    <Text className="text-gray-600">Processing Fee</Text>
+                    <Text className="text-gray-600">Dues Amount</Text>
                     <Text className="font-medium text-gray-900">
-                      {formatCurrency(paymentDetails?.stripeFee || 0)}
+                      {formatCurrency(paymentDetails?.duesAmount || 0)}
                     </Text>
                   </View>
-                )}
 
-                <View className="border-t border-gray-200 pt-3 mt-2">
-                  <View className="flex-row justify-between">
-                    <Text className="text-lg font-semibold text-gray-900">Total</Text>
-                    <Text className="text-lg font-bold text-blue-600">
-                      {formatCurrency(paymentDetails?.totalCharge || 0)}
-                    </Text>
+                  {(paymentDetails?.stripeFee || 0) > 0 && (
+                    <View className="flex-row justify-between py-2">
+                      <Text className="text-gray-600">Card Processing Fee</Text>
+                      <Text className="font-medium text-gray-900">
+                        {formatCurrency(paymentDetails?.stripeFee || 0)}
+                      </Text>
+                    </View>
+                  )}
+
+                  {(paymentDetails?.platformFee || 0) > 0 && (
+                    <View className="flex-row justify-between py-2">
+                      <Text className="text-gray-600">Service Fee</Text>
+                      <Text className="font-medium text-gray-900">
+                        {formatCurrency(paymentDetails?.platformFee || 0)}
+                      </Text>
+                    </View>
+                  )}
+
+                  <View className="border-t border-gray-200 pt-3 mt-2">
+                    <View className="flex-row justify-between">
+                      <Text className="text-lg font-semibold text-gray-900">Total</Text>
+                      <Text className="text-lg font-bold text-primary">
+                        {formatCurrency(paymentDetails?.totalCharge || 0)}
+                      </Text>
+                    </View>
                   </View>
                 </View>
-              </View>
+              </MercuryCard>
             </View>
 
             {/* Period Info */}
             {dues && (
-              <View className="bg-white mx-4 mt-4 rounded-2xl p-5 shadow-sm">
-                <Text className="text-sm text-gray-500 mb-1">Payment For</Text>
-                <Text className="font-semibold text-gray-900">{dues.period_name}</Text>
-                <Text className="text-sm text-gray-600 mt-1">{dues.chapter_name}</Text>
+              <View className="mx-4 mt-4">
+                <MercuryCard>
+                  <Text className="text-sm text-gray-500 mb-1">Payment For</Text>
+                  <Text className="font-semibold text-gray-900">{dues.period_name}</Text>
+                  <Text className="text-sm text-gray-600 mt-1">{dues.chapter_name}</Text>
+                </MercuryCard>
               </View>
             )}
 
+            {/* Refund Policy Note */}
+            <View className="mx-4 mt-4 p-4 bg-amber-50 border border-amber-200 rounded-xl">
+              <Text className="text-xs text-amber-800 text-center">
+                Refunds are handled by your chapter treasurer on a case-by-case basis. Contact them
+                directly for refund requests.
+              </Text>
+            </View>
+
             {/* Security Note */}
-            <View className="mx-4 mt-4 p-4 bg-gray-100 rounded-xl">
+            <View className="mx-4 mt-3 p-4 bg-gray-100 rounded-xl">
               <Text className="text-xs text-gray-500 text-center">
-                🔒 Your payment is secured by Stripe. Your card details are never stored on our
+                Your payment is secured by Stripe. Your card details are never stored on our
                 servers.
               </Text>
             </View>
 
             {/* Pay Button */}
             <View className="mx-4 mt-6">
-              <TouchableOpacity
-                className="bg-blue-600 py-4 rounded-xl flex-row items-center justify-center"
+              <GradientButton
+                title={`Pay ${formatCurrency(paymentDetails?.totalCharge || 0)}`}
                 onPress={handlePayment}
-                activeOpacity={0.8}
-              >
-                <CreditCard size={20} color="#FFFFFF" />
-                <Text className="text-white font-semibold text-base ml-2">
-                  Pay {formatCurrency(paymentDetails?.totalCharge || 0)}
-                </Text>
-              </TouchableOpacity>
+                icon={<CreditCard size={20} color="#FFFFFF" />}
+              />
             </View>
           </ScrollView>
         );
@@ -193,7 +211,7 @@ export default function PaymentScreen() {
       case 'processing':
         return (
           <View className="flex-1 items-center justify-center">
-            <ActivityIndicator size="large" color="#2563eb" />
+            <ActivityIndicator size="large" color="#5266eb" />
             <Text className="text-gray-500 mt-4">Processing payment...</Text>
           </View>
         );
@@ -209,12 +227,12 @@ export default function PaymentScreen() {
               Your payment of {formatCurrency(paymentDetails?.totalCharge || 0)} has been processed
               successfully.
             </Text>
-            <TouchableOpacity
-              className="mt-8 bg-blue-600 py-4 px-8 rounded-xl"
-              onPress={() => router.replace('/(app)/dashboard')}
-            >
-              <Text className="text-white font-semibold">Back to Dashboard</Text>
-            </TouchableOpacity>
+            <View className="mt-8 w-full">
+              <GradientButton
+                title="Back to Dashboard"
+                onPress={() => router.replace('/(app)/dashboard')}
+              />
+            </View>
           </View>
         );
 
@@ -233,15 +251,15 @@ export default function PaymentScreen() {
               >
                 <Text className="text-gray-700 font-medium">Cancel</Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                className="bg-blue-600 py-3 px-6 rounded-xl"
-                onPress={() => {
-                  setStep('loading');
-                  loadDuesAndCreatePaymentIntent();
-                }}
-              >
-                <Text className="text-white font-medium">Try Again</Text>
-              </TouchableOpacity>
+              <View>
+                <GradientButton
+                  title="Try Again"
+                  onPress={() => {
+                    setStep('loading');
+                    loadDuesAndCreatePaymentIntent();
+                  }}
+                />
+              </View>
             </View>
           </View>
         );
@@ -249,7 +267,7 @@ export default function PaymentScreen() {
   };
 
   return (
-    <SafeAreaView className="flex-1 bg-gray-50" edges={['top']}>
+    <SafeAreaView className="flex-1 bg-surface-bg" edges={['top']}>
       {/* Header */}
       <View className="bg-white border-b border-gray-200 px-4 py-3 flex-row items-center">
         <TouchableOpacity onPress={() => router.back()} className="mr-3 p-1">

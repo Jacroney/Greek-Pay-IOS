@@ -45,7 +45,7 @@ export default function ForgotPasswordScreen() {
 
   if (emailSent) {
     return (
-      <SafeAreaView className="flex-1 bg-white">
+      <SafeAreaView className="flex-1 bg-surface-bg">
         <View className="flex-1 px-6 pt-12 pb-8 items-center justify-center">
           <View className="w-20 h-20 bg-green-100 rounded-full items-center justify-center mb-6">
             <Text className="text-green-600 text-4xl">✓</Text>
@@ -55,7 +55,7 @@ export default function ForgotPasswordScreen() {
             We've sent a password reset link to {email}
           </Text>
           <TouchableOpacity
-            className="mt-8 py-4 px-8 bg-blue-600 rounded-xl"
+            className="mt-8 py-4 px-8 bg-primary rounded-xl"
             onPress={() => router.back()}
           >
             <Text className="text-white font-semibold">Back to Login</Text>
@@ -66,7 +66,7 @@ export default function ForgotPasswordScreen() {
   }
 
   return (
-    <SafeAreaView className="flex-1 bg-white">
+    <SafeAreaView className="flex-1 bg-surface-bg">
       <KeyboardAvoidingView
         behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         className="flex-1"
@@ -97,7 +97,7 @@ export default function ForgotPasswordScreen() {
             <View>
               <Text className="text-sm font-medium text-gray-700 mb-2">Email</Text>
               <TextInput
-                className="bg-gray-50 border border-gray-200 rounded-xl px-4 py-3.5 text-gray-900"
+                className="bg-surface-bg border border-gray-200/50 rounded-xl px-4 py-3.5 text-gray-900"
                 placeholder="Enter your email"
                 placeholderTextColor="#9CA3AF"
                 value={email}
@@ -111,7 +111,7 @@ export default function ForgotPasswordScreen() {
 
               <TouchableOpacity
                 className={`mt-6 py-4 rounded-xl items-center ${
-                  isSubmitting ? 'bg-blue-400' : 'bg-blue-600'
+                  isSubmitting ? 'bg-primary-400' : 'bg-primary'
                 }`}
                 onPress={handleResetPassword}
                 disabled={isSubmitting}
