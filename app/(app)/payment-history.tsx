@@ -70,7 +70,7 @@ export default function PaymentHistoryScreen() {
     return (
       <SafeAreaView className="flex-1 bg-surface-bg">
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#5266eb" />
+          <ActivityIndicator size="large" color="#214384" />
         </View>
       </SafeAreaView>
     );
@@ -92,7 +92,7 @@ export default function PaymentHistoryScreen() {
         className="flex-1"
         contentContainerStyle={{ paddingBottom: 32 }}
         refreshControl={
-          <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} tintColor="#5266eb" />
+          <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} tintColor="#214384" />
         }
       >
         {/* Summary Card */}

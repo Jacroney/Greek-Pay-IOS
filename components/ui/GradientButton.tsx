@@ -37,7 +37,7 @@ export function GradientButton({ title, onPress, isLoading, disabled, icon, styl
         disabled={disabled || isLoading}
       >
         <LinearGradient
-          colors={disabled ? ['#a0a0b0', '#8080a0'] : ['#5266eb', '#4338ca']}
+          colors={disabled ? ['#a0a0b0', '#8080a0'] : ['#214384', '#1a3569']}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
           style={{
@@ -46,7 +46,7 @@ export function GradientButton({ title, onPress, isLoading, disabled, icon, styl
             alignItems: 'center',
             justifyContent: 'center',
             flexDirection: 'row',
-            shadowColor: '#5266eb',
+            shadowColor: '#214384',
             shadowOffset: { width: 0, height: 4 },
             shadowOpacity: disabled ? 0 : 0.3,
             shadowRadius: 8,

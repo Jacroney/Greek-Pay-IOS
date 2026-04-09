@@ -61,6 +61,7 @@ export interface MemberDuesSummary extends MemberDues {
   fiscal_year: number;
   is_overdue: boolean;
   days_overdue: number;
+  early_discount: number;
 }
 
 // Dues Payment Record
@@ -133,6 +134,27 @@ export interface InstallmentPayment {
 // Installment Plan with Payments
 export interface InstallmentPlanWithPayments extends InstallmentPlan {
   payments: InstallmentPayment[];
+}
+
+// Reimbursement Request
+export interface ReimbursementRequest {
+  id: string;
+  chapter_id: string;
+  member_id: string;
+  purchase_name: string;
+  reason: string;
+  amount: number;
+  purchase_date: string;
+  payment_method: 'zelle' | 'venmo';
+  payment_contact: string;
+  payment_contact_type: 'phone' | 'email' | 'username';
+  receipt_url: string | null;
+  status: 'pending' | 'approved' | 'denied';
+  reviewed_by: string | null;
+  reviewed_at: string | null;
+  admin_notes: string | null;
+  created_at?: string;
+  updated_at?: string;
 }
 
 // Payment Intent Response

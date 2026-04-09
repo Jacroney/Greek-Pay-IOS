@@ -188,7 +188,7 @@ export default function ProfileScreen() {
                       >
                         {option.label}
                       </Text>
-                      {year === option.value && <Check size={18} color="#5266eb" />}
+                      {year === option.value && <Check size={18} color="#214384" />}
                     </TouchableOpacity>
                   ))}
                 </View>

@@ -25,6 +25,7 @@ import {
   BookOpen,
   Award,
   Phone,
+  Receipt,
 } from 'lucide-react-native';
 import { useAuth } from '../../hooks/useAuth';
 import { DuesService, InstallmentService } from '../../services/dues';
@@ -95,7 +96,7 @@ export default function DashboardScreen() {
     return (
       <SafeAreaView className="flex-1 bg-surface-bg">
         <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#5266eb" />
+          <ActivityIndicator size="large" color="#214384" />
           <Text className="text-gray-500 mt-4">Loading your dashboard...</Text>
         </View>
       </SafeAreaView>
@@ -129,13 +130,13 @@ export default function DashboardScreen() {
         className="flex-1"
         contentContainerStyle={{ paddingBottom: 32 }}
         refreshControl={
-          <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} tintColor="#5266eb" />
+          <RefreshControl refreshing={isRefreshing} onRefresh={handleRefresh} tintColor="#214384" />
         }
       >
         {/* Welcome Card */}
         <View className="mx-4 mt-4 rounded-2xl overflow-hidden">
           <LinearGradient
-            colors={['#eef1fd', '#e8e0fd']}
+            colors={['#f0f4f9', '#dce4f0']}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={{ padding: 20, borderRadius: 16 }}
@@ -197,6 +198,19 @@ export default function DashboardScreen() {
                 ? 'Your balance is paid in full - thank you!'
                 : 'You have a credit balance'}
             </Text>
+
+            {/* Early Discount Badges */}
+            {memberDuesSummary
+              .filter((dues) => (dues.early_discount || 0) > 0)
+              .map((dues) => (
+                <View key={`discount-${dues.id}`} className="mt-2">
+                  <View className="self-start px-2.5 py-1 rounded-full bg-emerald-100">
+                    <Text className="text-xs font-semibold text-emerald-700">
+                      {formatCurrency(dues.early_discount)} early discount applied
+                    </Text>
+                  </View>
+                </View>
+              ))}
 
             {/* Flexible Payment Plan Info */}
             {memberDuesSummary.some((dues) => dues.flexible_plan_deadline) && (
@@ -393,7 +407,7 @@ export default function DashboardScreen() {
                   {nextPayment && plan.status === 'active' && (
                     <View className="mt-4 p-4 rounded-xl bg-primary-soft border border-primary-200">
                       <View className="flex-row items-start">
-                        <CreditCard size={20} color="#5266eb" />
+                        <CreditCard size={20} color="#214384" />
                         <View className="ml-3">
                           <Text className="text-sm font-medium text-primary-800">
                             Next payment: {formatCurrency(nextPayment.amount)}
@@ -454,7 +468,7 @@ export default function DashboardScreen() {
             <Text className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</Text>
             <View className="flex-row flex-wrap justify-between">
               <QuickActionButton
-                icon={<User size={24} color="#5266eb" />}
+                icon={<User size={24} color="#214384" />}
                 label="Profile"
                 onPress={() => router.push('/(app)/profile')}
               />
@@ -464,9 +478,9 @@ export default function DashboardScreen() {
                 onPress={() => router.push('/(app)/payment-history')}
               />
               <QuickActionButton
-                icon={<RefreshCw size={24} color="#0891B2" />}
-                label="Refresh"
-                onPress={handleRefresh}
+                icon={<Receipt size={24} color="#059669" />}
+                label="Reimburse"
+                onPress={() => router.push('/(app)/reimbursement')}
               />
               <QuickActionButton
                 icon={<Settings size={24} color="#6B7280" />}
@@ -482,11 +496,11 @@ export default function DashboardScreen() {
 }
 
 const ICON_MAP: Record<string, React.ReactNode> = {
-  mail: <Mail size={16} color="#5266eb" />,
-  graduation: <GraduationCap size={16} color="#5266eb" />,
-  book: <BookOpen size={16} color="#5266eb" />,
-  award: <Award size={16} color="#5266eb" />,
-  phone: <Phone size={16} color="#5266eb" />,
+  mail: <Mail size={16} color="#214384" />,
+  graduation: <GraduationCap size={16} color="#214384" />,
+  book: <BookOpen size={16} color="#214384" />,
+  award: <Award size={16} color="#214384" />,
+  phone: <Phone size={16} color="#214384" />,
 };
 
 function InfoRow({ icon, label, value }: { icon: string; label: string; value: string }) {

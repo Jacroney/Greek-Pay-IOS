@@ -119,7 +119,7 @@ export default function PaymentScreen() {
       case 'loading':
         return (
           <View className="flex-1 items-center justify-center">
-            <ActivityIndicator size="large" color="#5266eb" />
+            <ActivityIndicator size="large" color="#214384" />
             <Text className="text-gray-500 mt-4">Preparing payment...</Text>
           </View>
         );
@@ -211,7 +211,7 @@ export default function PaymentScreen() {
       case 'processing':
         return (
           <View className="flex-1 items-center justify-center">
-            <ActivityIndicator size="large" color="#5266eb" />
+            <ActivityIndicator size="large" color="#214384" />
             <Text className="text-gray-500 mt-4">Processing payment...</Text>
           </View>
         );

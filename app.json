@@ -12,20 +12,21 @@
     "splash": {
       "image": "./assets/splash-icon.png",
       "resizeMode": "contain",
-      "backgroundColor": "#2563eb"
+      "backgroundColor": "#214384"
     },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.greekpay.member",
       "infoPlist": {
-        "NSCameraUsageDescription": "This app does not use the camera.",
-        "NSPhotoLibraryUsageDescription": "This app does not access photos."
+        "NSCameraUsageDescription": "GreekPay needs camera access to photograph receipts for reimbursement requests.",
+        "NSPhotoLibraryUsageDescription": "GreekPay needs photo library access to upload receipts for reimbursement requests.",
+        "NSFaceIDUsageDescription": "GreekPay uses Face ID to securely unlock the app."
       }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#2563eb"
+        "backgroundColor": "#214384"
       },
       "package": "com.greekpay.member"
     },
@@ -37,6 +38,21 @@
       "expo-router",
       "expo-font",
       "expo-secure-store",
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Allow GreekPay to access your photos to upload receipts.",
+          "cameraPermission": "Allow GreekPay to use your camera to photograph receipts."
+        }
+      ],
+      "expo-local-authentication",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/icon.png",
+          "color": "#214384"
+        }
+      ],
       [
         "@stripe/stripe-react-native",
         {

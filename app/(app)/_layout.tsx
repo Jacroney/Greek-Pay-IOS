@@ -23,6 +23,8 @@ export default function AppLayout() {
       <Stack.Screen name="payment-history" />
       <Stack.Screen name="profile" />
       <Stack.Screen name="settings" />
+      <Stack.Screen name="change-password" />
+      <Stack.Screen name="reimbursement" />
       <Stack.Screen name="pay/[duesId]" />
     </Stack>
   );
