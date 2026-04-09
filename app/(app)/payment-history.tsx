@@ -4,7 +4,6 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
-  ActivityIndicator,
   RefreshControl,
 } from 'react-native';
 import { useRouter } from 'expo-router';
@@ -14,6 +13,7 @@ import { useAuth } from '../../hooks/useAuth';
 import { DuesService } from '../../services/dues';
 import { DuesPayment } from '../../types';
 import { formatCurrency, formatDate } from '../../utils/format';
+import { PaymentHistorySkeleton } from '../../components/ui/SkeletonLoader';
 
 export default function PaymentHistoryScreen() {
   const { profile } = useAuth();
@@ -68,10 +68,15 @@ export default function PaymentHistoryScreen() {
 
   if (isLoading) {
     return (
-      <SafeAreaView className="flex-1 bg-surface-bg">
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#214384" />
+      <SafeAreaView className="flex-1 bg-surface-bg" edges={['top']}>
+        {/* Header */}
+        <View className="bg-white border-b border-gray-200 px-4 py-3 flex-row items-center">
+          <TouchableOpacity onPress={() => router.back()} className="mr-3 p-1">
+            <ChevronLeft size={24} color="#374151" />
+          </TouchableOpacity>
+          <Text className="text-lg font-semibold text-gray-900">Payment History</Text>
         </View>
+        <PaymentHistorySkeleton />
       </SafeAreaView>
     );
   }

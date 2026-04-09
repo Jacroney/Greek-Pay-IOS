@@ -63,14 +63,12 @@ export default function LoginScreen() {
           <View className="flex-1 px-6 pt-12 pb-8">
             {/* Logo / Header */}
             <View className="items-center mb-12">
-              <View className="w-24 h-24 bg-primary rounded-2xl items-center justify-center mb-4 p-3">
-                <Image
-                  source={require('../../assets/logo.png')}
-                  className="w-full h-full"
-                  resizeMode="contain"
-                />
-              </View>
-              <Text className="text-3xl font-bold text-gray-900">GreekPay</Text>
+              <Image
+                source={require('../../assets/logo.png')}
+                style={{ width: 96, height: 96, borderRadius: 20 }}
+                resizeMode="contain"
+              />
+              <Text className="text-3xl font-bold text-gray-900 mt-4">GreekPay</Text>
               <Text className="text-gray-500 mt-2">Member Portal</Text>
             </View>
 

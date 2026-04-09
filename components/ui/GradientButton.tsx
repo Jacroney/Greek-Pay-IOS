@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { Text, Pressable, Animated, ActivityIndicator, ViewStyle } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as Haptics from 'expo-haptics';
 
 interface GradientButtonProps {
   title: string;
@@ -15,6 +16,7 @@ export function GradientButton({ title, onPress, isLoading, disabled, icon, styl
   const scale = useRef(new Animated.Value(1)).current;
 
   const handlePressIn = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     Animated.spring(scale, {
       toValue: 0.97,
       useNativeDriver: true,

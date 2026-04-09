@@ -1,16 +1,17 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import {
   View,
   Text,
   ScrollView,
   TouchableOpacity,
   RefreshControl,
-  ActivityIndicator,
   Image,
+  Animated,
 } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
+import * as Haptics from 'expo-haptics';
 import {
   DollarSign,
   Clock,
@@ -40,9 +41,10 @@ import {
 } from '../../utils/format';
 import { MercuryCard } from '../../components/ui/MercuryCard';
 import { GradientButton } from '../../components/ui/GradientButton';
+import { DashboardSkeleton } from '../../components/ui/SkeletonLoader';
 
 export default function DashboardScreen() {
-  const { profile, getMemberDues } = useAuth();
+  const { user, profile, getMemberDues } = useAuth();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(true);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -51,11 +53,16 @@ export default function DashboardScreen() {
   const [installmentPlans, setInstallmentPlans] = useState<InstallmentPlanWithPayments[]>([]);
 
   const loadDuesInfo = useCallback(async () => {
+    if (!user || !profile) {
+      setIsLoading(false);
+      return;
+    }
+
     try {
       const info = await getMemberDues();
       setDuesInfo(info);
 
-      if (profile?.email) {
+      if (profile.email) {
         const summary = await DuesService.getMemberDuesSummary();
         setMemberDuesSummary(summary);
 
@@ -81,7 +88,7 @@ export default function DashboardScreen() {
       setIsLoading(false);
       setIsRefreshing(false);
     }
-  }, [profile?.email, getMemberDues]);
+  }, [user, profile?.email, getMemberDues]);
 
   useEffect(() => {
     loadDuesInfo();
@@ -92,13 +99,26 @@ export default function DashboardScreen() {
     loadDuesInfo();
   }, [loadDuesInfo]);
 
+  // Entrance animations — hooks must be before any early returns
+  const fadeAnims = useRef([0, 1, 2, 3].map(() => new Animated.Value(0))).current;
+  const slideAnims = useRef([0, 1, 2, 3].map(() => new Animated.Value(20))).current;
+
+  useEffect(() => {
+    if (!isLoading) {
+      const animations = fadeAnims.map((fade, i) =>
+        Animated.parallel([
+          Animated.timing(fade, { toValue: 1, duration: 400, delay: i * 100, useNativeDriver: true }),
+          Animated.timing(slideAnims[i], { toValue: 0, duration: 400, delay: i * 100, useNativeDriver: true }),
+        ])
+      );
+      Animated.parallel(animations).start();
+    }
+  }, [isLoading]);
+
   if (isLoading) {
     return (
       <SafeAreaView className="flex-1 bg-surface-bg">
-        <View className="flex-1 items-center justify-center">
-          <ActivityIndicator size="large" color="#214384" />
-          <Text className="text-gray-500 mt-4">Loading your dashboard...</Text>
-        </View>
+        <DashboardSkeleton />
       </SafeAreaView>
     );
   }
@@ -134,7 +154,7 @@ export default function DashboardScreen() {
         }
       >
         {/* Welcome Card */}
-        <View className="mx-4 mt-4 rounded-2xl overflow-hidden">
+        <Animated.View style={{ opacity: fadeAnims[0], transform: [{ translateY: slideAnims[0] }] }} className="mx-4 mt-4 rounded-2xl overflow-hidden">
           <LinearGradient
             colors={['#f0f4f9', '#dce4f0']}
             start={{ x: 0, y: 0 }}
@@ -155,10 +175,10 @@ export default function DashboardScreen() {
               </View>
             </View>
           </LinearGradient>
-        </View>
+        </Animated.View>
 
         {/* Dues Balance Card */}
-        <View className="mx-4 mt-4">
+        <Animated.View style={{ opacity: fadeAnims[1], transform: [{ translateY: slideAnims[1] }] }} className="mx-4 mt-4">
           <MercuryCard>
             <View className="flex-row items-start justify-between mb-4">
               <View className="flex-row items-center">
@@ -266,7 +286,7 @@ export default function DashboardScreen() {
               </View>
             )}
           </MercuryCard>
-        </View>
+        </Animated.View>
 
         {/* Active Installment Plans */}
         {installmentPlans.length > 0 &&
@@ -439,7 +459,7 @@ export default function DashboardScreen() {
           })}
 
         {/* Member Info Card */}
-        <View className="mx-4 mt-4">
+        <Animated.View style={{ opacity: fadeAnims[2], transform: [{ translateY: slideAnims[2] }] }} className="mx-4 mt-4">
           <MercuryCard>
             <View className="flex-row items-center justify-between mb-4">
               <Text className="text-lg font-semibold text-gray-900">Member Information</Text>
@@ -460,10 +480,10 @@ export default function DashboardScreen() {
               <InfoRow icon="phone" label="Phone" value={profile?.phone_number || 'Not provided'} />
             </View>
           </MercuryCard>
-        </View>
+        </Animated.View>
 
         {/* Quick Actions */}
-        <View className="mx-4 mt-4">
+        <Animated.View style={{ opacity: fadeAnims[3], transform: [{ translateY: slideAnims[3] }] }} className="mx-4 mt-4">
           <MercuryCard>
             <Text className="text-lg font-semibold text-gray-900 mb-4">Quick Actions</Text>
             <View className="flex-row flex-wrap justify-between">
@@ -489,7 +509,7 @@ export default function DashboardScreen() {
               />
             </View>
           </MercuryCard>
-        </View>
+        </Animated.View>
       </ScrollView>
     </SafeAreaView>
   );
@@ -531,7 +551,10 @@ function QuickActionButton({
   return (
     <TouchableOpacity
       className="w-[48%] bg-white border border-gray-200/50 rounded-xl p-4 items-center mb-3"
-      onPress={onPress}
+      onPress={() => {
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+        onPress();
+      }}
       activeOpacity={0.7}
       style={{
         shadowColor: '#000',

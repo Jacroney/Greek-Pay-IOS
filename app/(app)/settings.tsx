@@ -20,6 +20,7 @@ import { BiometricService } from '../../services/biometric';
 import { NotificationService } from '../../services/notifications';
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
+import * as Haptics from 'expo-haptics';
 
 const PRIVACY_POLICY_URL = 'https://greekpay.org/privacy';
 const TERMS_OF_SERVICE_URL = 'https://greekpay.org/terms';
@@ -57,6 +58,7 @@ export default function SettingsScreen() {
   };
 
   const toggleBiometric = async (value: boolean) => {
+    Haptics.selectionAsync();
     if (value) {
       // Verify biometric works before enabling
       const success = await BiometricService.authenticate(`Enable ${biometricType}`);
@@ -71,6 +73,7 @@ export default function SettingsScreen() {
   };
 
   const toggleNotifications = async (value: boolean) => {
+    Haptics.selectionAsync();
     if (value) {
       const token = await NotificationService.registerForPushNotifications();
       if (token && user) {
