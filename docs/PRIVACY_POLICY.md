@@ -1,6 +1,6 @@
 # Privacy Policy
 
-**Last Updated: [DATE]**
+**Last Updated: April 9, 2026**
 
 Greek Pay ("we," "our," or "us") operates the Greek Pay mobile application (the "App"). This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our App.
 
@@ -59,7 +59,7 @@ We implement appropriate technical and organizational measures to protect your p
 
 ## Data Retention
 
-We retain your personal information for as long as your account is active or as needed to provide services. You may request deletion of your account by contacting your chapter administrator or emailing us at [SUPPORT_EMAIL].
+We retain your personal information for as long as your account is active or as needed to provide services. You may request deletion of your account by contacting your chapter administrator or emailing us at joseph@greekpay.org.
 
 ## Your Rights
 
@@ -70,7 +70,7 @@ Depending on your location, you may have the right to:
 - Request deletion of your information
 - Opt out of certain data processing
 
-To exercise these rights, contact us at [SUPPORT_EMAIL].
+To exercise these rights, contact us at joseph@greekpay.org.
 
 ## California Residents (CCPA)
 
@@ -94,9 +94,6 @@ We may update this Privacy Policy from time to time. We will notify you of any c
 
 If you have questions about this Privacy Policy, please contact us at:
 
-**Email**: [SUPPORT_EMAIL]
+**Email**: joseph@greekpay.org
 **Website**: https://greekpay.org
 
----
-
-*Replace [DATE] with the current date and [SUPPORT_EMAIL] with your support email address before publishing.*

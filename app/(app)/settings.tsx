@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, ScrollView, Linking, Alert, Switch } from 'react-native';
+import { View, Text, TouchableOpacity, ScrollView, Linking, Alert, Switch, ActivityIndicator } from 'react-native';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import {
@@ -13,11 +13,14 @@ import {
   Lock,
   Fingerprint,
   Bell,
+  CreditCard,
+  Trash2,
 } from 'lucide-react-native';
 import { useAuth } from '../../hooks/useAuth';
 import { MercuryCard } from '../../components/ui/MercuryCard';
 import { BiometricService } from '../../services/biometric';
 import { NotificationService } from '../../services/notifications';
+import { AuthService } from '../../services/auth';
 import Constants from 'expo-constants';
 import * as Notifications from 'expo-notifications';
 import * as Haptics from 'expo-haptics';
@@ -36,6 +39,7 @@ export default function SettingsScreen() {
   const [biometricEnabled, setBiometricEnabled] = useState(false);
   const [biometricType, setBiometricType] = useState('Biometric');
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  const [deletingAccount, setDeletingAccount] = useState(false);
 
   useEffect(() => {
     loadSettings();
@@ -122,6 +126,35 @@ export default function SettingsScreen() {
         },
       },
     ]);
+  };
+
+  const handleDeleteAccount = () => {
+    Alert.alert(
+      'Delete Account',
+      'This will permanently delete your account and all associated data, including payment history and profile information. This action cannot be undone.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        {
+          text: 'Delete Account',
+          style: 'destructive',
+          onPress: async () => {
+            setDeletingAccount(true);
+            try {
+              const { error } = await AuthService.deleteAccount();
+              if (error) {
+                Alert.alert('Error', error.message || 'Failed to delete account. Please try again or contact support.');
+              } else {
+                router.replace('/(auth)/login');
+              }
+            } catch {
+              Alert.alert('Error', 'An unexpected error occurred. Please contact support.');
+            } finally {
+              setDeletingAccount(false);
+            }
+          },
+        },
+      ]
+    );
   };
 
   const handleContactSupport = () => {
@@ -262,6 +295,19 @@ export default function SettingsScreen() {
             <MercuryCard style={{ padding: 0 }}>
               <TouchableOpacity
                 className="flex-row items-center justify-between px-4 py-4 border-b border-gray-100"
+                onPress={() => router.push('/(app)/saved-payments')}
+                activeOpacity={0.7}
+              >
+                <View className="flex-row items-center">
+                  <View className="w-9 h-9 bg-primary-soft rounded-lg items-center justify-center">
+                    <CreditCard size={20} color="#214384" />
+                  </View>
+                  <Text className="text-gray-900 font-medium ml-3">Payment Methods</Text>
+                </View>
+                <ChevronRight size={18} color="#9CA3AF" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                className="flex-row items-center justify-between px-4 py-4 border-b border-gray-100"
                 onPress={() => router.push('/(app)/change-password')}
                 activeOpacity={0.7}
               >
@@ -274,7 +320,7 @@ export default function SettingsScreen() {
                 <ChevronRight size={18} color="#9CA3AF" />
               </TouchableOpacity>
               <TouchableOpacity
-                className="flex-row items-center justify-between px-4 py-4"
+                className="flex-row items-center justify-between px-4 py-4 border-b border-gray-100"
                 onPress={handleSignOut}
                 activeOpacity={0.7}
               >
@@ -285,6 +331,27 @@ export default function SettingsScreen() {
                   <Text className="text-rose-600 font-medium ml-3">Sign Out</Text>
                 </View>
                 <ChevronRight size={18} color="#9CA3AF" />
+              </TouchableOpacity>
+              <TouchableOpacity
+                className="flex-row items-center justify-between px-4 py-4"
+                onPress={handleDeleteAccount}
+                activeOpacity={0.7}
+                disabled={deletingAccount}
+              >
+                <View className="flex-row items-center">
+                  <View className="w-9 h-9 bg-rose-100 rounded-lg items-center justify-center">
+                    <Trash2 size={20} color="#DC2626" />
+                  </View>
+                  <View className="ml-3">
+                    <Text className="text-rose-600 font-medium">Delete Account</Text>
+                    <Text className="text-gray-500 text-xs">Permanently delete your account and data</Text>
+                  </View>
+                </View>
+                {deletingAccount ? (
+                  <ActivityIndicator size="small" color="#DC2626" />
+                ) : (
+                  <ChevronRight size={18} color="#9CA3AF" />
+                )}
               </TouchableOpacity>
             </MercuryCard>
           </View>

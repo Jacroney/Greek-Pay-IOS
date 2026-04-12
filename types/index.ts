@@ -59,6 +59,7 @@ export interface MemberDuesSummary extends MemberDues {
   period_name: string;
   period_type: string;
   fiscal_year: number;
+  category_name: string | null;
   is_overdue: boolean;
   days_overdue: number;
   early_discount: number;
@@ -155,6 +156,19 @@ export interface ReimbursementRequest {
   admin_notes: string | null;
   created_at?: string;
   updated_at?: string;
+}
+
+// Saved Payment Method
+export interface SavedPaymentMethod {
+  id: string;
+  user_id: string;
+  stripe_payment_method_id: string;
+  type: 'card' | 'us_bank_account';
+  last4: string | null;
+  brand: string | null;
+  is_default: boolean;
+  created_at: string;
+  updated_at: string;
 }
 
 // Payment Intent Response

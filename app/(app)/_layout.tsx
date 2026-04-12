@@ -25,6 +25,7 @@ export default function AppLayout() {
       <Stack.Screen name="settings" />
       <Stack.Screen name="change-password" />
       <Stack.Screen name="reimbursement" />
+      <Stack.Screen name="saved-payments" />
       <Stack.Screen name="pay/[duesId]" />
     </Stack>
   );

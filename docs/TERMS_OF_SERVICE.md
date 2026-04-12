@@ -1,6 +1,6 @@
 # Terms of Service
 
-**Last Updated: [DATE]**
+**Last Updated: April 9, 2026**
 
 Welcome to Greek Pay. These Terms of Service ("Terms") govern your use of the Greek Pay mobile application (the "App") operated by Greek Pay ("we," "our," or "us").
 
@@ -58,7 +58,7 @@ Greek Pay does not make refund decisions for chapter dues—this is determined b
 If you have a dispute about a payment:
 
 1. First, contact your chapter treasurer
-2. If unresolved, contact Greek Pay support at [SUPPORT_EMAIL]
+2. If unresolved, contact Greek Pay support at joseph@greekpay.org
 3. For unauthorized transactions, you may also contact your bank or card issuer
 
 ## 5. Installment Plans
@@ -116,7 +116,7 @@ We may modify these Terms at any time. We will notify you of material changes th
 
 ## 14. Governing Law
 
-These Terms are governed by the laws of [STATE/JURISDICTION], without regard to conflict of law principles.
+These Terms are governed by the laws of the State of Utah, without regard to conflict of law principles.
 
 ## 15. Dispute Resolution
 
@@ -126,9 +126,6 @@ Any disputes arising from these Terms or your use of the App shall be resolved t
 
 If you have questions about these Terms, please contact us at:
 
-**Email**: [SUPPORT_EMAIL]
+**Email**: joseph@greekpay.org
 **Website**: https://greekpay.org
 
----
-
-*Replace [DATE] with the current date, [SUPPORT_EMAIL] with your support email address, and [STATE/JURISDICTION] with your governing jurisdiction before publishing.*

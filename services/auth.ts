@@ -108,6 +108,24 @@ export const AuthService = {
     return { error };
   },
 
+  async deleteAccount() {
+    const user = await this.getCurrentUser();
+    if (!user) {
+      return { error: new Error('Not authenticated') };
+    }
+
+    // Call Supabase RPC to delete user data and auth account
+    const { error } = await supabase.rpc('delete_user_account');
+
+    if (error) {
+      return { error: new Error(error.message) };
+    }
+
+    // Sign out locally after deletion
+    await supabase.auth.signOut();
+    return { error: null };
+  },
+
   onAuthStateChange(callback: (user: any) => void) {
     return supabase.auth.onAuthStateChange((event, session) => {
       callback(session?.user ?? null);
